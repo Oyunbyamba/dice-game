@@ -24,10 +24,30 @@ document.getElementById("current-0").textContent = 0;
 document.getElementById("current-1").textContent = 0;
 
 document.querySelector("#score-0").textContent = 0;
+
 // Roll dice товч олж, эвэнт листенертэй холбох
 document.querySelector(".btn-roll").addEventListener("click", function() {
+  // 1-6 хүртэлх санамсаргүй тоог авна
   var diceNumber = Math.floor(Math.random() * 6) + 1;
+  // Шооны зургийг гаргаж ирнэ
   diceDom.style.display = "block";
+  // Буусан санамсаргүй тоонд харгалзах шооны зургийг вэб дээр гаргаж ирнэ.
   diceDom.src = "dice-" + diceNumber + ".png";
-  //   alert("Шоо буулаа : " + diceNumber);
+  // Буусан тоо нь 1-ээс ялгаатай бол идэвхиэй тоглогчийн ээлжийн оноог нэмэгдүүлнэ.
+  if (diceNumber !== 1) {
+    // 1 ээс ялгаатай тоо буусан тул тоог тоглогчид нэмж өгнө.
+    roundScore = roundScore + diceNumber;
+    document.getElementById("current-" + activePlayer).textContent = roundScore;
+  } else {
+    // Энэ тоглогчийн ээлжиндээ цуглуулсан оноог 0 болгоно.
+    document.getElementById("current-" + activePlayer).textContent = 0;
+    roundScore = 0;
+    // 1 буусан тул тоглогчийн ээлжийг нөгөө тоглогч руу шилжүүлнэ.
+    activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
+    // Идэвхитэй тоглогчийг заасан улаан цэгийг шилжүүлэх
+    document.querySelector(".player-0-panel ").classList.toggle("active");
+    document.querySelector(".player-1-panel ").classList.toggle("active");
+    // Шоо 1 буувал харагдахгүй болгох
+    diceDom.style.display = "none";
+  }
 });
