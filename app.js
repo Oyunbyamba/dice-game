@@ -8,7 +8,9 @@ var scores;
 // Идэвхитэй тоглогчийн ээлжиндээ цуглуулж байгаа оноог хадгалах хувьсагч
 var roundScore;
 // Шооны зургийг үзүүлэх элементийг DOM-оос хайж олоод энд хадгална.
-var diceDom = document.querySelector(".dice");
+var diceDom_0 = document.querySelector(".dice-0");
+var diceDom_1 = document.querySelector(".dice-1");
+
 // Тоглоомыг эхлүүлнэ
 initGame();
 // Тоглоом шинээр эхлэхэд бэлтгэх функц
@@ -27,7 +29,8 @@ function initGame() {
   document.getElementById("current-0").textContent = 0;
   document.getElementById("current-1").textContent = 0;
   document.querySelector("#score-0").textContent = 0;
-  diceDom.style.display = "none";
+  diceDom_0.style.display = "none";
+  diceDom_1.style.display = "none";
   // Тоглогчдын нэрийг буцааж гаргах
   document.getElementById("name-0").textContent = "Player 1";
   document.getElementById("name-1").textContent = "Player 2";
@@ -45,9 +48,14 @@ document.querySelector(".btn-roll").addEventListener("click", function() {
     // 1-6 хүртэлх санамсаргүй тоог авна
     var diceNumber = Math.floor(Math.random() * 6) + 1;
     // Шооны зургийг гаргаж ирнэ
-    diceDom.style.display = "block";
+    activePlayer === 0
+      ? (diceDom_0.style.display = "block")
+      : (diceDom_1.style.display = "block");
+
     // Буусан санамсаргүй тоонд харгалзах шооны зургийг вэб дээр гаргаж ирнэ.
-    diceDom.src = "dice-" + diceNumber + ".png";
+    activePlayer === 0
+      ? (diceDom_0.src = "dice-" + diceNumber + ".png")
+      : (diceDom_1.src = "dice-" + diceNumber + ".png");
     // Буусан тоо нь 1-ээс ялгаатай бол идэвхиэй тоглогчийн ээлжийн оноог нэмэгдүүлнэ.
     if (diceNumber !== 1) {
       // 1 ээс ялгаатай тоо буусан тул тоог тоглогчид нэмж өгнө.
@@ -83,6 +91,8 @@ document.querySelector(".btn-hold").addEventListener("click", function() {
       // WINNER гэсэн текстийг тоглогчийн Player -гэсэн нэрнийх нь оронд гаргана.
       document.getElementById("name-" + activePlayer).textContent =
         "WINNER !!!";
+      // Шоог ялагчийн дэлгэц дээр харагдахгүй болгоно.
+      document.querySelector(".dice-" + activePlayer).style.display = "none";
       // Ялагчийн CSS -д winner гэсэн class нэмэх
       document
         .querySelector(".player-" + activePlayer + "-panel")
@@ -112,8 +122,9 @@ function switchToNextPlayer() {
   // Идэвхитэй тоглогчийг заасан улаан цэгийг шилжүүлэх
   document.querySelector(".player-0-panel ").classList.toggle("active");
   document.querySelector(".player-1-panel ").classList.toggle("active");
-  // Шоо 1 буусан тул харагдахгүй болгох
-  diceDom.style.display = "none";
+  // Шоо 1 буусан тул хэвээр нь үлдээх
+  diceDom_0.style.display = "block";
+  diceDom_1.style.display = "block";
 }
 // NEW GAME - товчны эвэнт листенер
 document.querySelector(".btn-new").addEventListener("click", initGame);
